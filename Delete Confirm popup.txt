@@ -1,0 +1,3 @@
+                                    <a href="deletePage.php?dltId=<?php echo base64_encode($fet_res['id']);?>" onclick="return confirm('Are You Sure Want To Delete ??');" >
+                                         <input type="submit" name="delete" Value="Delete" />
+                                    </a>

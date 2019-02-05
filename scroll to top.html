@@ -1,0 +1,39 @@
+<div id="scrollToUp">
+		<i class="far fa-arrow-alt-circle-up">
+		</i>
+	</div>
+<script type="text/javascript">
+	// Scroll To Top..................
+	$(window).scroll(function(){
+		if($(this).scrollTop()>300)
+		{
+			$("#scrollToUp").fadeIn();
+		}
+		else{
+			$("#scrollToUp").fadeOut();
+		}
+	});
+
+	$("#scrollToUp").click(function(){
+		$("html, body").animate({scrollTop:0},1000);
+	});
+	</script>
+	
+	style...............
+	#scrollToUp {
+	background: #51B105;
+	height: 58px;
+	width: 60px;
+	text-align: center;
+	position: fixed;
+	bottom: 8px;
+	border-radius: 50%;
+	right: 17px;
+	cursor: pointer;
+}
+#scrollToUp i {
+	font-size: 45px;
+	color: #fff;
+	padding: 6px 0;
+	/* position: fixed; */
+}

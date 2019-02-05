@@ -1,0 +1,50 @@
+<?php 
+    // tut 30...............................
+            $query = "SELECT * FROM title_slogan WHERE id = 1";
+            $slogainTit = $db->select($query);
+            if($slogainTit)
+            {
+                while ($value = mysqli_fetch_array($slogainTit)) 
+                {
+                  $title = $value['title'];
+                  if(isset($_GET['pageId']))
+                  {
+                    $id = $_GET['pageId'];
+                    $query = "SELECT * FROM tbl_pages WHERE id = '$id' ";
+                    $pageRes = $db->select($query);
+                    $pageNam = $pageRes->fetch_assoc();
+                    $name= $pageNam['name'];
+            ?>
+                <title><?php echo $name; ?>-<?php echo $title; ?></title>
+            <?php
+                  }else{
+            ?>
+                <title><?php echo $fm->title(); ?>-<?php echo $title; ?></title>
+            <?php
+                  }
+            ?> 
+                
+        <?php } } ?>
+		// for constant navigation........ such as about, contuct
+<?php		
+		public function title()
+		{ // tutorial 30
+			$path = $_SERVER['SCRIPT_FILENAME']; // it will take full path of url ex:http://localhost/9.twlp_php_blog/page.php?pageId=3
+			$title = basename($path,'.php'); // it will take basename from path ex:page
+			$title = str_replace("_"," ",$title);
+			if($title == "index")
+			{
+				$title = "Home";
+			}
+			else if($title == "contuct us")
+			{
+				$title = "contuct us ";
+			}
+			else if($title == "about")
+			{
+				$title = "About";
+			}
+			
+			$title = ucwords($title);
+			return $title;
+		}

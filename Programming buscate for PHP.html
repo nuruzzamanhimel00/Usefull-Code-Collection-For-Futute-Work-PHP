@@ -1,0 +1,162 @@
+1) <?php 
+	spl_autoload_register(function($class_name){
+		include("lib/".$class_name.".php");
+		// exp: "lib/user.php"
+	})
+	OR
+	function __autoload($class_name)
+	{
+	include("lib/".$class_name.".php");
+	}
+$user = new user();
+?>
+this function use for include pages, when an object created  then this function automatic catch 
+class name and include that classes
+
+2) base64_encode() function user for endcode query string value
+ex: <a href="index.php?action=edt&id=<?php echo base64_encode($value["id"]); ?>">Edit</a>
+
+to use this encode value we must be decode the value like as,
+ex: $id = base64_decode($_GET["id"]);
+
+--) urlencode()/rowurlencode():
+<?php header("Location: index.php?msg=".urldecode("Data Inserted Successfully")); ?>
+rowurlencode() function uses befor the query string(?)
+
+$string = "himel";
+
+3) strlen($string); ans: = 5
+it will calculate lenght of the function.
+
+4) ** htmlentities() -> remove html into the string. 
+ex: htmlentities("<h1> Nuruzzaman Himel </h1>");
+ans: Nuruzzaman Himel
+ ** trim() -> it will remove forward and backword space from string
+ex : trim("  Himel  ");
+** stripcslashes() -> it will be remove unexpected slaches(//) from the string
+
+
+4) <form action="<?php echo htmlentities($_SERVER["PHP_SELF"]); ?>" method="post">
+$_SERVER["PHP_SELF"] -> it will use to form action in the same page.
+
+
+5)
+ if($_SERVER["REQUEST_METHOD"] == "POST")
+{
+}
+it will be use when from will be submited
+
+
+6)
+validation filter:
+** filter_var($_POST[email'],FILTER_VALIDATE_EMAIL)
+** filter_var($_POST['website'],FILTER_VALIDATE_URL)
+**
+$num = 100;
+$min = 1;
+$max = 200;
+			
+if(filter_var($num,FILTER_VALIDATE_INT,array("options"=> array("min_range"=>$min,"max_range"=>$max))))
+{
+      echo "{$num} is validate range <br>";	
+}
+else
+{
+     echo "{$num} isn't validate ranges <br>";	
+				
+}
+
+**
+ $url = "http://www.google.com?name=himel";
+ if(filter_var($url,FILTER_VALIDATE_URL,FILTER_FLAG_QUERY_REQUIRED))
+            {
+            	echo "There have Query String <br>";
+            }
+
+
+7)
+COMMENT must be use:-
+ nl2br($comment) -> this method use for comment
+
+
+
+9)
+preg_match() -> uses to match from field string
+ex: preg_match('/[^a-z0-9_-}]+/i', $username)
+
+10)
+$existing = "jpg";
+$array = array("jpg","png","gif","jpeg");
+in_array($existing,$array);
+
+11) Image upload Function: 
+** <form action="" method="post" enctype="multipart/form-data">
+enctype = "multipart/form-data" must important
+
+** upload image in images folder:
+$tmpname = $_FILES['image']['tmp_name'];					
+$filename = $_FILES['image']['name'];
+$filesize = $_FILES['image']['size'];
+move_uploaded_file($tmpname,"images/".$filename);
+
+** reandome image name generate.......
+					$div = explode(".", $filename);
+					$file_ext = strtolower(end($div));
+				    $upload_file = substr(md5(time()), 0,10).".".$file_ext;
+					
+** remove image in images FOLDER:
+unlink("images/".$filename);	
+
+12) urlencode() AND rowurlencode()
+<a href="index.php?id=<?php echo urlencode($id);?>&&name=himel"	 > </a>
+
+13)DB timestamp to dateformate change...........
+
+<?php echo $fm->formatDate($value["date"]); ?>
+public function formatDate($date)
+{
+	return date('F j, Y, g:i a',strtotime($date));
+}
+ans: June 21, 2018, 11:53 am
+
+
+14) PHP MEthod house:-
+	
+**
+$string = "My name is himel.My name is himel.My name is himel.My name is himel." 
+substr($string,0,10);(string,limit)-- this method short the length of the string
+
+**
+Database CURRENT_TIMESTAMP formate change
+date('F j, Y, g:i a',strtotime($date));
+ans: June 21, 2018, 11:53 am
+
+**
+strrpos($text,' '); ->(string position) it actually find the sapce from the text;
+real uses:
+public function textShort($text,$limit = 400)
+		{
+			$text = substr($text,0,$limit);
+			$text = substr($text,0,strrpos($text, ' ')); // when it find free speech last position in the text 
+			// then text will be stop
+			$text = $text."....";
+			return $text;
+
+		}
+** validation method:
+		-> trim("himel");
+		-> htmlentities("<h2>I love BD  </h2>"); // it remove html tag from any string 
+		->stripcslashes("my name / / himel") // it will remove back cslashes
+		mysqli_real_escape_string($db->connection,"string"); // it will remove SQL injection
+** base64_encode and base64_decode:
+this two method actually use in querystring value pase time.
+ex:
+1) query string value encode
+<a href="index.php?id=<?php base64_encode($id); ?>" >Clcik here </a>
+2) query string get value
+$id = base64_decode($_GET['id']);
+
+**strtolower(), strtoupper(),ucfirst(),ucwords() ,in_array("jpg",$array) here, $array = array("jpg","png","gif");
+
+** preg_match() -> uses to match from field string
+ex: preg_match('/[^a-z0-9_-}]+/i', $username)

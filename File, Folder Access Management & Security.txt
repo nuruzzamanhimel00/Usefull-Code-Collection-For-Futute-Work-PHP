@@ -1,0 +1,8 @@
+1) .htaccess folder uses in php folder that why user can't directly access in your folder.
+2) index.html blank page uses other folder that why user can't directly access in your folder.
+
+3) base64_encode() and base64_decode() function user in query string
+ex: 
+<a href="index.php?id=base64_encode(<?php echo $id; ?>)" >
+other page in index.php:
+$id = base64_decode($_GET["id"]);

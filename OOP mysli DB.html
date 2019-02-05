@@ -1,0 +1,135 @@
+// MYSQLI DB Connection
+ 1) 
+ //configuration..................
+ 
+ <?php
+define("DB_HOST", "localhost");
+define("DB_USER", "root");
+define("DB_PASS", "pass");
+define("DB_NAME", "db_blog");
+public $host   = DB_HOST;
+	public $user   = DB_USER;
+	public $pass   = DB_PASS;
+	public $dbname = DB_NAME;
+	
+	public $conn;
+	public $error;
+	
+	public function connection()
+	{	// create DB Connection................
+		$this->conn = new mysqli($this->host,$this->user,$this->pass,$this->dbname);
+		if(!isset($this->conn))
+		{
+			$this->error ="Connection fail".$this->conn->connect_error;
+			return false;
+		}
+	}
+
+
+?>
+ SELECT and Read .......................
+	$db = new Database(); // create and Object
+	
+	//ex: $query = "SELECT * FROM tbl_post ORDER BY id DESC LIMIT 5";
+   $query = "SELECT * FROM tbl_post WHERE id= ".$id." ORDER BY rand() LIMIT 6 ";
+  // Query perform........................
+    $result = $db->select($query); // function call....
+	
+// read .................................................................
+
+ if(isset($result))
+   {	// fetch return data....................
+   // Another way to fetch array
+  // $value = mysqli_fetch_array($result);
+  //while($value = mysqli_fetch_array($result)/mysqli_fetch_assoc($result)
+           // {
+            while($value = $result->fetch_assoc())
+            {
+?>
+
+
+         	<div class="samePost clear">
+            	<h2> <?php echo $value["title"] ?></h2>
+                <h4><?php echo $value["date"] ?> <a href="#"><?php echo $value["author"] ?></a></h4>
+                <img src="image/<?php echo $value["image"] ?>" alt="post image">	
+                <p>
+                    <?php echo $value["body"] ?>
+                 </p>
+                 <div class="readMore clear"><a href="post.php"> Read More</a> </div>
+            
+            </div>
+           
+     <?php } ?>
+           
+    <?php } ?> 
+// select............................................................
+public function select($query)
+	{ // perform query....................
+		$result = $this->conn->query($query);
+			// row count in DB table............
+		
+			if($result->num_rows > 0)
+			{
+				return $result;
+			}
+			else{
+				return false;
+			}
+		
+	}
+	// another row count function in mysqli is:
+	$query_perform = $this->conn->query($query);
+	$row_count = mysqli_num_rows($query_perform);
+
+	2) logIn : 
+	
+	if($_SERVER['REQUEST_METHOD'] == "POST" AND isset($_POST['login']))
+			{
+				$username = $fm->validation($_POST["username"]);
+				$password = $fm->validation(md5($_POST["password"]));
+
+				$username = mysqli_real_escape_string($db->conn,$username);
+				$password = mysqli_real_escape_string($db->conn,$password);
+
+				$query = "SELECT * FROM tbl_user WHERE username = '$username' AND password = '$password' ";
+				// echo $query;
+				// exit();
+				$result = $db->select($query);
+				if(isset($result))
+				{
+					//$value = mysqli_fetch_array($result); 
+					$value = $result->fetch_assoc();
+
+					//$row = mysqli_num_rows($result); 
+					$row = $result->num_rows;
+					if($row > 0)
+					{
+						Session::sess_set("login",TRUE);
+						Session::sess_set("username",$value['username']);
+						header("Location: index.php");
+					}else{
+						echo "<span><p style='color:red; font-size:18px;'>Result Not Found !! </p> </span>";
+					}
+				}else{
+					echo "<span><p style='color:red; font-size:18px;'>Username & password Not Match !! </p> </span>";
+				}
+			}
+3) mysqli_affected_rows($connection) :(VVVVV Importent)
+// this function will be use in DELETE and Update query for check query are affected or not............ 
+
+$query = "DELETE from tbl WHERE id = 1";
+                            $result = $db->delete($query); //method call.......
+public function delete($query)
+	{//perforM query.....
+		$result = $this->conn->query($query);
+		if($result && mysqli_affected_rows($this->conn) == 1)
+		{
+			return $result;
+		}
+		else{
+			return false;
+		}
+	}
+4) Query:-------(ORDER BY id/name/rand()-random function)
+  **   $query = "SELECT * FROM tbl_post WHERE catId= ".$catId." ORDER BY rand() LIMIT 6 ";
+               

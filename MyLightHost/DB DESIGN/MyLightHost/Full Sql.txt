@@ -1,0 +1,124 @@
+CREATE TABLE Department(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    deptname VARCHAR(50) NOT NULL
+);
+CREATE TABLE Education(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    description TEXT
+);
+CREATE TABLE EmployType(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL  
+);
+CREATE TABLE Designation(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL  
+);
+CREATE TABLE LeaveType(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL  
+);
+CREATE TABLE RequisitionType(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL  
+);
+
+CREATE TABLE Employee(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    cardNo VARCHAR(255) UNIQUE,
+    name VARCHAR(200) NOT NULL,
+    departmentId INT,
+    dateOfBirth DATE,
+    fathername VARCHAR(150),
+    mothername VARCHAR(150),
+    maritalStatus INT NOT NULL,
+    bloodGroup INT NOT NULL,
+    NID VARCHAR(255) NOT NULL,
+    presentAddress VARCHAR(255) NOT NULL,
+    permanentAddress VARCHAR(255) NOT NULL,
+    educationId INT,
+    email VARCHAR(255) NOT NULL,
+    gender INT,
+    religion INT,
+    designationId INT,
+    signature VARCHAR(255),
+    image VARCHAR(255),
+    employTypeId INT,
+    FOREIGN KEY(departmentId) REFERENCES Department(id),
+    FOREIGN KEY (educationId) REFERENCES Education(id),
+    FOREIGN KEY (employTypeId) REFERENCES EmployType(id),
+    FOREIGN KEY (designationId) REFERENCES Designation(id)             
+);
+CREATE TABLE Attendance(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    employeeId INT,
+    inTime TIME,
+    outTime TIME,
+    PreAndAbs INT,
+    FOREIGN KEY(employeeId) REFERENCES Employee(id)
+);
+CREATE TABLE NoticeBoard(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    employeeId INT,
+    departmentId INT,
+    title VARCHAR(255),
+    notice TEXT,
+    FOREIGN KEY(employeeId) REFERENCES Employee(id),
+    FOREIGN KEY(departmentId) REFERENCES Department(id)
+);
+CREATE TABLE EmployeeEducation(
+	
+    employeeId INT,
+    educationId INT,
+    FOREIGN KEY(employeeId) REFERENCES Employee(id),
+    FOREIGN KEY(educationId) REFERENCES Education(id),
+    PRIMARY KEY(employeeId,educationId)
+);
+CREATE TABLE LeaveTable(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    employeeId INT,
+    leaveType INT,
+    startDate DATETIME,
+    endDate DATETIME,
+    reasons TEXT,
+    approvalPerson INT,
+    logStatus INT,
+    FOREIGN KEY(employeeId) REFERENCES Employee(id)
+);
+CREATE TABLE EmployeeContact(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    employeeId INT,
+    name VARCHAR(30),
+    FOREIGN KEY(employeeId) REFERENCES Employee(id)
+);
+CREATE TABLE EmployeeExperience(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    employeeId INT,
+    name VARCHAR(30),
+    FOREIGN KEY(employeeId) REFERENCES Employee(id)
+);
+CREATE TABLE EmployeeSkill(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    employeeId INT,
+    name VARCHAR(30),
+    FOREIGN KEY(employeeId) REFERENCES Employee(id)
+);
+CREATE TABLE Requisition(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    employeeId INT,
+    requisitionTypeId INT,
+    reason TEXT,
+    approvalPerson INT,
+    logStatus INT,
+    FOREIGN KEY(employeeId) REFERENCES Employee(id),
+    FOREIGN KEY(requisitionTypeId) REFERENCES RequisitionType(id)
+);
+CREATE TABLE AccessContList(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    cardNo VARCHAR(255) UNIQUE,
+    email VARCHAR(60) UNIQUE,
+    password VARCHAR(255),
+    type INT
+    
+);

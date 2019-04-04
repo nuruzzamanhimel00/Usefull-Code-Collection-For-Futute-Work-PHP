@@ -11,3 +11,7 @@ echo $diff->format("%R%a days");
 
 </body>
 </html>
+
+// date formate change............
+date("d-m-Y",strtotime($leave_period[0]))
+ex: 10-3-2019
